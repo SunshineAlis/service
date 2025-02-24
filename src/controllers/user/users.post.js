@@ -1,21 +1,38 @@
+import { User } from "../../schemas/index.js";
+export const createEmail = async (req, res, next) => {
+  try {
+    console.log("Received Data:", req.body); //
+
+    const { email } = req.body;
+
+    const newEmail = new User({ email });
+    await newUser.save();
+
+    console.log("User saved successfully:", newEmail);
+
+    res.status(201).send({ message: "User created successfully" });
+    next();
+  } catch (error) {
+    console.error("Error creating user:", error);
+    res.status(500).send({ message: "Internal server error" });
+  }
+};
+
 export const createUser = async (req, res) => {
   try {
-    console.log("Received Data:", req.body); // 
+    console.log("Received Data:", req.body); //
 
     const { email, password } = req.body;
-
-    if (!email || !password) {
-      return res.status(400).json({ message: "Email and password are required" });
-    }
 
     const newUser = new User({ email, password });
     await newUser.save();
 
     console.log("User saved successfully:", newUser);
 
-    res.status(201).json({ message: "User created successfully" });
+    res.status(201).send({ message: "User created successfully" });
+    next();
   } catch (error) {
     console.error("Error creating user:", error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).send({ message: "Internal server error" });
   }
 };
