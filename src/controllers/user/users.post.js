@@ -1,22 +1,21 @@
-import { User } from "../../schemas/index.js";
-export const createEmail = async (req, res, next) => {
+import { User } from "../../schemas/User.js";
+export const checkEmail = async (req, res) => {
   try {
-    console.log("Received Data:", req.body); //
-
     const { email } = req.body;
+    console.log(req.body);
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+  return res.status(400).send({ message: "Email is already registered" });
+    } else {
 
-    const newEmail = new User({ email });
-    await newUser.save();
-
-    console.log("User saved successfully:", newEmail);
-
-    res.status(201).send({ message: "User created successfully" });
-    next();
+   return res.status(200).send({message:"let's go "}) }
+    
   } catch (error) {
-    console.error("Error creating user:", error);
-    res.status(500).send({ message: "Internal server error" });
+    
+    res.status(500).send({ message: "Error checking email" });
   }
 };
+
 
 export const createUser = async (req, res) => {
   try {
@@ -30,7 +29,7 @@ export const createUser = async (req, res) => {
     console.log("User saved successfully:", newUser);
 
     res.status(201).send({ message: "User created successfully" });
-    next();
+    
   } catch (error) {
     console.error("Error creating user:", error);
     res.status(500).send({ message: "Internal server error" });

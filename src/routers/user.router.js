@@ -1,14 +1,13 @@
 import express from "express";
-import { checkEmail } from "../controllers/user/users.get.js";
-import { checkPassword } from "../authentication/auth.post.js";
-import { createEmail, createUser } from "../controllers/user/users.post.js";
+import { checkEmail } from "../controllers/user/users.post.js";
+import { checkPassword } from "../middleware/auth.post.js";
+import {  createUser } from "../controllers/user/users.post.js";
 
 const router = express.Router();
 
-router.get("/user", checkEmail);
+router.post("/", checkEmail);
 router.post("/password", checkPassword, createUser);
 
-router.use(authMiddleware);
 
 // // 检查邮箱是否存在
 // router.post("/check-email", checkEmail);

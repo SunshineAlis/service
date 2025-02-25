@@ -1,7 +1,5 @@
-import { User } from "../schemas/index.js";
-import bcrypt from "bcrypt";
 
-
+import bcrypt from "bcryptjs";
 
 export const checkPassword = async (req, res, next) => {
   try {

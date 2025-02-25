@@ -1,21 +1,43 @@
 import express from "express";
 import cors from "cors";
 import { connectDb } from "./src/schemas/mongo.connection.js";
-import { checkEmail } from "./src/authentication/auth.post.js";
-import { checkPassword } from "./src/authentication/auth.post.js";
-import { createUser } from "./src/controllers/user/users.post.js";
 import router from "./src/routers/user.router.js";
 const port = 4040;
 const app = express();
 
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+
+
+const corsOptions = {
+  origin: 'http://localhost:3000', // 
+  methods: ['GET', 'POST', 'DELETE','PUT'],
+  allowedHeaders: ['Content-Type'],
+  credentials: true,
+};
+app.use(cors(corsOptions))
 
 app.use(express.json());
 
 connectDb();
 
-app.use("", router);
 
-app.listen(port, () => {
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
+
+
+app.use("/user", router);
+
+
+
+app.listen(4040, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+
+
+
+
+
+
+
+
