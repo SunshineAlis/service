@@ -1,27 +1,31 @@
 
 import bcrypt from "bcryptjs";
 
-export const checkPassword = async (req, res, next) => {
-  try {
-    const { password } = req.body;
 
-    if (!password) {
-      res.status(400).send({ message: "Password is required" });
+export const checkPassword = async (req, res) => {
+  const { password, confirmPassword } = req.body;
+  try {
+    // Нууц үг шаардлагатай эсэхийг шалгах
+    if (!password && password !== confirmPassword) {
+      res.status(400).json({ message: "Error" });
     }
 
-    const passRe = /^\d{8,}$/;
-    if (!passRe.test(password)) {
-      res.status(400).send({
-        message: "Password must be at least 8 digits and contain only numbers.",
+
+
+    // Нууц үгийн урьдчилсан шалгалт
+    const passVal = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+    if (!passVal.test(password)) {
+      return res.status(400).json({
+        message: "Password must be at least 8 characters long, contain letters, numbers, and a special character",
       });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    req.body.password = hashedPassword;
+    // Баталгаажуулахад алдаа байхгүй бол confirmPassword устгаж, хэшлэсэн нууц үгийг хадгалах
 
-    next(); //
+    req.body.password = await bcrypt.hash(password, 10);
+
+
   } catch (error) {
-    console.error("Error checking password:", error);
-    res.status(500).send({ message: "Internal server error" });
+    res.status(500).json({ message: "Internal server error", error: error.message });
   }
 };

@@ -4,4 +4,4 @@ const foodCategorySchema = new mongoose.Schema({
   categoryName: { type: String, require: true },
 });
 
-export const foodCategory = mongoose.model("category", foodCategorySchema);
+export const foodCategory = mongoose.model("categories", foodCategorySchema);

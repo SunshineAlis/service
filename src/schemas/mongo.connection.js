@@ -1,9 +1,11 @@
 import mongoose from "mongoose";
-
+import dotenv from 'dotenv';
+dotenv.config();
 export const connectDb = async () => {
   try {
     await mongoose.connect(
-      "mongodb+srv://enkhuushnymo:Mongolia&90@cluster0.cy3yn.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster0",
+      process.env.DATABASE_CONNECTION_URL,
+
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
@@ -14,3 +16,4 @@ export const connectDb = async () => {
     console.error("MongoDB connection error:", error);
   }
 };
+console.log("MongoDB URI:", process.env.DATABASE_CONNECTION_URL);
