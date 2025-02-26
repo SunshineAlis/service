@@ -5,7 +5,7 @@ import { updateUser } from "../controllers/user/users.put.js";
 
 const router = express.Router();
 
-router.get("/", checkEmail);
+router.post("", checkEmail);
 router.post("/signUp", createUser);
 router.put("/information", updateUser);
 
