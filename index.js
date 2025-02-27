@@ -1,14 +1,14 @@
 import express from "express";
 import cors from "cors";
 import { connectDb } from "./src/schemas/mongo.connection.js";
-import router from "./src/routers/user.router.js";
-import route from "./src/routers/food.router.js";
+import userRouter from "./src/routers/user.router.js";
+import foodRouter from "./src/routers/food.router.js";
+import categoryRouter from "./src/routers/category.router.js";
 
 const port = 4040;
 const app = express();
 
 const corsOptions = {
-
   origin: "http://localhost:3000",
   methods: ["GET", "POST", "DELETE", "PUT"],
   allowedHeaders: ["Content-Type"],
@@ -27,8 +27,9 @@ app.use((err, req, res, next) => {
   next();
 });
 
-app.use("/user", router);
-app.use("/foods", route)
+app.use("/user", userRouter);
+app.use("/foods", foodRouter);
+app.use("/category", categoryRouter);
 
 app.listen(4040, () => {
   console.log(`Server is running on port ${port}`);
