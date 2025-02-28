@@ -10,7 +10,7 @@ export const createCategory = async (req, res) => {
       categoryId: savedCategory._id,
     });
   } catch (error) {
-    console.error("Error creating category:", error);
+
     res.status(500).send({ message: "Internal server error" });
   }
 };

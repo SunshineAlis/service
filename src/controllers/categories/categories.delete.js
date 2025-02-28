@@ -15,9 +15,9 @@ export const deleteCategory = async (req, res) => {
     if (!existingCategory) {
       return res.status(404).send({ message: "Category not found" });
     }
-    console.log("Category deleted successfully:", existingCategory);
+    await existingCategory.save();
     res.status(200).send({
-      message: "Category updated successfully;",
+      message: "Category deleted successfully;",
       categoryData: existingCategory,
     });
   } catch (error) {

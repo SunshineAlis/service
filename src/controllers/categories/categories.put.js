@@ -15,7 +15,7 @@ export const updateCategory = async (req, res) => {
     if (!existingCategory) {
       return res.status(404).send({ message: "Category not found" });
     }
-    console.log("Category updated successfully:", existingCategory);
+    await existingCategory.save();
     res.status(200).send({
       message: "Category updated successfully;",
       categoryData: existingCategory,

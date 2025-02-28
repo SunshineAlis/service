@@ -4,6 +4,8 @@ import { connectDb } from "./src/schemas/mongo.connection.js";
 import userRouter from "./src/routers/user.router.js";
 import foodRouter from "./src/routers/food.router.js";
 import categoryRouter from "./src/routers/category.router.js";
+import orderItemRouter from "./src/routers/orderItem.router.js";
+import orderRouter from "./src/routers/order.router.js";
 
 const port = 4040;
 const app = express();
@@ -30,6 +32,8 @@ app.use((err, req, res, next) => {
 app.use("/user", userRouter);
 app.use("/foods", foodRouter);
 app.use("/category", categoryRouter);
+app.use("/orderItem", orderItemRouter);
+app.use("/order", orderRouter);
 
 app.listen(4040, () => {
   console.log(`Server is running on port ${port}`);
