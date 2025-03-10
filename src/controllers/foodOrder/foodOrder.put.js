@@ -1,4 +1,4 @@
-import { foodOrder } from "../../model/foodOrder.model";
+import { foodOrder } from "../../model/foodOrder.model.js";
 export const updateOrder = async (req, res) => {
     try {
         const orderData = req.body;

@@ -11,7 +11,7 @@ const port = 4040;
 const app = express();
 
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: "http://localhost:3000", // 改为前端运行的端口
   methods: ["GET", "POST", "DELETE", "PUT"],
   allowedHeaders: ["Content-Type"],
   credentials: true,
@@ -34,6 +34,10 @@ app.use("/foods", foodRouter);
 app.use("/category", categoryRouter);
 app.use("/orderItem", orderItemRouter);
 app.use("/order", orderRouter);
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+});
 
 app.listen(4040, () => {
   console.log(`Server is running on port ${port}`);

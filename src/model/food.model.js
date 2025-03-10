@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
 const foodSchema = new mongoose.Schema({
-  foodName: { type: String, require: true },
-  price: { type: Number, require: true },
+  foodName: { type: String, required: true },
+  price: { type: Number, required: true },
   image: { type: String, },
-  ingredients: { type: String, require: true },
+  ingredients: { type: String, required: true },
   updateAt: { type: Date },
   category: { type: mongoose.Types.ObjectId, ref: "categories" },
 });
