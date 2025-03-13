@@ -17,7 +17,7 @@ export const createFood = async (req, res) => {
 
     const { foodName, price, ingredients, categoryId } = req.body;
 
-    // Оролтын шалгалт
+    
     if (!foodName || !price || !ingredients || !categoryId) {
       return res.status(400).send({ message: "Missing required fields" });
     }
