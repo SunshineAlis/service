@@ -7,7 +7,7 @@ const foodCategorySchema = new mongoose.Schema({
 
 
 foodCategorySchema.methods.getFoodCount = async function () {
-  const foodCount = await Food.countDocuments({ category: this._id }); // 使用 category 而不是 categoryId
+  const foodCount = await Food.countDocuments({ category: this._id });
   return foodCount;
 };
 
