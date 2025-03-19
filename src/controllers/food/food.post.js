@@ -8,16 +8,20 @@ export const createFood = async (req, res) => {
 
     if (req.file) {
       try {
-        imageUrl = await uploadImage(req.file.buffer); // `buffer` ашиглах
+        imageUrl = await uploadImage(req.file.buffer); //
       } catch (uploadError) {
         console.error("Error uploading image:", uploadError);
-        return res.status(500).send({ message: "Failed to upload image", details: uploadError.message });
+        return res
+          .status(500)
+          .send({
+            message: "Failed to upload image",
+            details: uploadError.message,
+          });
       }
     }
 
     const { foodName, price, ingredients, categoryId } = req.body;
 
-    
     if (!foodName || !price || !ingredients || !categoryId) {
       return res.status(400).send({ message: "Missing required fields" });
     }
@@ -32,9 +36,10 @@ export const createFood = async (req, res) => {
 
     await newFood.save();
     res.status(201).send({ message: "Food added successfully", food: newFood });
-
   } catch (error) {
     console.error("Error processing request:", error);
-    res.status(500).send({ message: "Internal Server Error", details: error.message });
+    res
+      .status(500)
+      .send({ message: "Internal Server Error", details: error.message });
   }
 };
