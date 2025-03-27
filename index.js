@@ -4,14 +4,14 @@ import { connectDb } from "./src/schemas/mongo.connection.js";
 import userRouter from "./src/routers/user.router.js";
 import foodRouter from "./src/routers/food.router.js";
 import categoryRouter from "./src/routers/category.router.js";
-import orderItemRouter from "./src/routers/orderItem.router.js";
+// import orderItemRouter from "./src/routers/orderItem.router.js";
 import orderRouter from "./src/routers/order.router.js";
 
 const port = 3030;
 const app = express();
 
 const corsOptions = {
-  origin: "http://localhost:3000", // 
+  origin: "http://localhost:3000", //
   methods: ["GET", "POST", "DELETE", "PUT"],
   allowedHeaders: ["Content-Type"],
   credentials: true,
@@ -24,9 +24,7 @@ connectDb();
 app.use("/user", userRouter);
 app.use("/foods", foodRouter);
 app.use("/category", categoryRouter);
-app.use("/orderItem", orderItemRouter);
 app.use("/order", orderRouter);
-
 
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError) {
@@ -35,10 +33,9 @@ app.use((err, req, res, next) => {
   next();
 });
 
-
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).send('Something broke!');
+  res.status(500).send("Something broke!");
 });
 
 app.listen(3030, () => {

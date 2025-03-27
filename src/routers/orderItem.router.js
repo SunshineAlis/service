@@ -1,12 +1,12 @@
-import express from "express";
-import { createOrderItem } from "../controllers/orderItem/orderItem.post.js";
-import { updatOrderItem } from "../controllers/orderItem/orderItem.put.js";
-import { deleteOrderItem } from "../controllers/orderItem/orderItem.delete.js";
+// import express from "express";
+// import { createOrderItem } from "../controllers/orderItem/orderItem.post.js";
 
-const orderItemRouter = express.Router();
+// import { deleteOrderItem } from "../controllers/orderItem/orderItem.delete.js";
 
-orderItemRouter.post("", createOrderItem);
-orderItemRouter.put("/: orderItemId", updatOrderItem);
-orderItemRouter.delete("", deleteOrderItem);
+// const orderItemRouter = express.Router();
 
-export default orderItemRouter;
+// orderItemRouter.post("", createOrderItem);
+
+// orderItemRouter.delete("", deleteOrderItem);
+
+// export default orderItemRouter;

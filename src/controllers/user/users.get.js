@@ -17,3 +17,9 @@ export const checkEmail = async (req, res) => {
     res.status(500).send({ message: "Error checking email" });
   }
 };
+
+
+
+export const checkToken = async (req,res)=>{
+  
+}

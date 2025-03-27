@@ -7,7 +7,7 @@ export const createOrder = async (req, res) => {
         const newOrder = new foodOrder((req.body));
         const savedOrder = await newOrder.save();
         res.status(201).send({
-            messaga: "Food order created successfully",
+            message: "Food order created successfully",
             orderId: savedOrder._id
         });
 
