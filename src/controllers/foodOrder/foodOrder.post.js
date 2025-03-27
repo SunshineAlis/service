@@ -13,9 +13,8 @@ export const createOrder = async (req, res) => {
 
     }
     catch (error) {
-
-        res.status(500).send({ message: "createOrder:Internal server error" })
-
+        console.error("createOrder error:", error);
+        res.status(500).send({ message: "Internal server error", error: error.message });
     }
 }
 
