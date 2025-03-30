@@ -6,7 +6,7 @@ import { deleteFood } from "../controllers/food/food.delete.js";
 import {
   getFoodCountByCategory,
   categoryFoods,
-  getAllFoodCount,
+
 } from "../controllers/food/food.get.js";
 
 const upload = multer({ storage: multer.memoryStorage() }); //
@@ -18,6 +18,6 @@ foodRouter.put("/:foodId", upload.single("image"), updateFood);
 foodRouter.delete("/:foodId", deleteFood);
 foodRouter.get("/:categoryId/foodCount", getFoodCountByCategory);
 foodRouter.get("/:categoryId/foods", categoryFoods);
-foodRouter.get("/allCount", getAllFoodCount);
+
 
 export default foodRouter;

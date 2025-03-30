@@ -10,7 +10,7 @@ cloudinary.v2.config({
 const uploadFromBuffer = (buffer, folder) => {
     return new Promise((resolve, reject) => {
         const uploadStream = cloudinary.v2.uploader.upload_stream(
-            { resource_type: "image", folder }, // resource_type: "image" болгож тодорхой болгов
+            { resource_type: "image", folder },
             (error, result) => {
                 if (error) {
                     console.error("Cloudinary upload error:", error);

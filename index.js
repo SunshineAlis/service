@@ -4,16 +4,17 @@ import { connectDb } from "./src/schemas/mongo.connection.js";
 import userRouter from "./src/routers/user.router.js";
 import foodRouter from "./src/routers/food.router.js";
 import categoryRouter from "./src/routers/category.router.js";
-// import orderItemRouter from "./src/routers/orderItem.router.js";
+
 import orderRouter from "./src/routers/order.router.js";
 
 const port = 3030;
 const app = express();
 
+
 const corsOptions = {
-  origin: "http://localhost:3000", //
+  origin: ["http://localhost:3001", "http://localhost:3000", "http://localhost:3002",],
   methods: ["GET", "POST", "DELETE", "PUT"],
-  allowedHeaders: ["Content-Type"],
+  allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
 };
 app.use(cors(corsOptions));

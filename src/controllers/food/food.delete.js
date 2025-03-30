@@ -13,7 +13,7 @@ export const deleteFood = async (req, res) => {
       return res.status(404).send({ message: "Food not found" });
     }
 
-    console.log("Food deleted successfully:", existingFood);
+
 
     res
       .status(200)

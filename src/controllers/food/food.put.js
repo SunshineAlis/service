@@ -33,7 +33,7 @@ export const updateFood = async (req, res) => {
       return res.status(404).send({ message: "Food not found" });
     }
 
-    console.log("Food updated successfully:", updatedFood);
+
     res.status(200).send({
       message: "Food updated successfully",
       food: updatedFood,

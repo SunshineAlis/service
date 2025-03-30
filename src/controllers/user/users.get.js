@@ -1,25 +1,43 @@
 import { User } from "../../model/user.model.js";
 
-export const checkEmail = async (req, res) => {
-  try {
-    const { email } = req.body;
-    console.log(req.body);
-    if (!req.body.email) {
-      return res.status(400).json({ error: "Please enter email!" });
+export const getUser = async (req, res) => {
+    try {
+        const { email } = req.user;
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).send({ message: "User not found" });
+        }
+
+        res.status(200).send({
+            message: "Fetched user information",
+            email: user.email,
+            phone: user.phone,
+            address: user.address,
+
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: "Server error" });
     }
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).send({ message: "Email is already registered" });
-    } else {
-      return res.status(200).send({ message: "let's go " });
-    }
-  } catch (error) {
-    res.status(500).send({ message: "Error checking email" });
-  }
 };
 
+export const getUserToken = async (req, res) => {
+    try {
+        const { email } = req.user;
 
+        const user = await User.findOne({ email });
 
-export const checkToken = async (req,res)=>{
-  
-}
+        if (!user) {
+            return res.status(404).send({ message: "User not found" });
+        }
+
+        res.status(200).send({
+            message: "Fetched user information",
+            role: user.role
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: "Server error" });
+    }
+};
