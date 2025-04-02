@@ -1,8 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { User } from "../../model/user.model.js";
-// import dotenv from 'dotenv';
-// dotenv.config();
+
 
 export const login = async (req, res) => {
   try {
@@ -10,12 +9,12 @@ export const login = async (req, res) => {
 
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).send({ message: "User not found" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ message: "Password does not match" });
+      return res.status(401).send({ message: "Password does not match" });
     }
 
     const token = jwt.sign(

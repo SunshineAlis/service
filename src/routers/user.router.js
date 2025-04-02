@@ -3,7 +3,7 @@ import { checkEmail } from "../controllers/user/users.post.js";
 import { createUser } from "../controllers/user/users.post.js";
 import { forgotPasswordUser, updateUser } from "../controllers/user/users.put.js";
 import { login } from "../controllers/user/user.login.js";
-// import { authenticateUser } from "../middleware/auth.user.js"
+
 
 
 const userRouter = express.Router();

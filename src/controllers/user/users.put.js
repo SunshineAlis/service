@@ -29,7 +29,7 @@ export const updateUser = async (req, res) => {
     if (email && email !== user.email) {
       const existingUser = await User.findOne({ email });
       if (existingUser) {
-        return res.status(400).json({ message: 'Email already registered' });
+        return res.status(400).send({ message: 'Email already registered' });
       }
       user.email = email;
     }
@@ -37,7 +37,7 @@ export const updateUser = async (req, res) => {
     if (password && newPassword) {
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
-        return res.status(401).json({ message: 'Password is incorrect' });
+        return res.status(401).send({ message: 'Password is incorrect' });
       }
       user.password = await bcrypt.hash(newPassword, 3);
     }

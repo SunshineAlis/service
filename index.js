@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { connectDb } from "./src/schemas/mongo.connection.js";
+import { connectDb } from "./src/connection/mongo.connection.js";
 import userRouter from "./src/routers/user.router.js";
 import foodRouter from "./src/routers/food.router.js";
 import categoryRouter from "./src/routers/category.router.js";
