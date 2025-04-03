@@ -36,7 +36,7 @@ export const categoryFoods = async (req, res) => {
     const categoryId = req.params.categoryId;
 
     if (!categoryId) {
-      return res.status(400).json({ message: "Category ID is required" });
+      return res.status(400).send({ message: "Category ID is required" });
     }
     const foods = await Food.find({ category: categoryId });
 

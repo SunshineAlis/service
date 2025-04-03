@@ -23,13 +23,12 @@ export const createUser = async (req, res) => {
 
 
 
-
 export const checkEmail = async (req, res) => {
   try {
     const { email } = req.body;
     console.log(req.body);
     if (!req.body.email) {
-      return res.status(400).json({ error: "Please enter email!" });
+      return res.status(400).send({ error: "Please enter email!" });
     }
     const existingUser = await User.findOne({ email });
     if (existingUser) {

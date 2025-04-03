@@ -1,5 +1,3 @@
-
-
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { User } from "../../model/user.model.js";
@@ -23,7 +21,7 @@ export const updateUser = async (req, res) => {
 
     const user = await User.findById(decoded.id);
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).send({ message: 'User not found' });
     }
 
     if (email && email !== user.email) {
@@ -47,7 +45,7 @@ export const updateUser = async (req, res) => {
 
     await user.save();
 
-    res.status(200).json({
+    res.status(200).send({
       message: "User information updated successfully",
       user: {
         email: user.email,
