@@ -1,10 +1,10 @@
-import { foodOrder } from "../../model/foodOrder.model.js";
+import { FoodOrder } from "../../model/foodOrder.model.js";
 export const deleteOrder = async (req, res) => {
     try {
         const orderData = req.body;
         const { orderId } = req.params;
 
-        const existingOrder = await foodOrder.findByIdAndDelete(
+        const existingOrder = await FoodOrder.findByIdAndDelete(
             orderId,
             orderData, {
             new: true,

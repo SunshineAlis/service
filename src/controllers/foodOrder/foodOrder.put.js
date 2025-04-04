@@ -1,10 +1,10 @@
-import { foodOrder } from "../../model/foodOrder.model.js";
+import { FoodOrder } from "../../model/foodOrder.model.js";
 export const updateOrder = async (req, res) => {
     try {
         const orderData = req.body;
         const { orderId } = req.params;
 
-        const existingOrder = await foodOrder.findByIdAndUpdate(
+        const existingOrder = await FoodOrder.findByIdAndUpdate(
             orderId,
             orderData, {
             new: true,

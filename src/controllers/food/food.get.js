@@ -17,19 +17,6 @@ export const getFoodCountByCategory = async (req, res) => {
   }
 };
 
-export const getAllFoodCounts = async (req, res) => {
-  try {
-    const allFoodCounts = await Food.aggregate([
-      { $group: { _id: "$category", count: { $sum: 1 } } },
-    ]);
-    res
-      .status(200)
-      .send({ message: "food count fetched", data: allFoodCounts });
-  } catch (error) {
-    console.error("Error fetching food count:", error);
-    res.status(500).send({ message: "Server error" });
-  }
-};
 
 export const categoryFoods = async (req, res) => {
   try {

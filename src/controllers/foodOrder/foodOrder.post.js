@@ -1,24 +1,106 @@
-import { foodOrder } from "../../model/foodOrder.model.js"
-import { User } from "../../model/user.model.js";
-import mongoose from "mongoose";
-
+import { FoodOrder } from "../../model/foodOrder.model.js"
 export const createOrder = async (req, res) => {
-
     try {
-        const newOrder = new foodOrder((req.body));
-        const savedOrder = await newOrder.save();
-        res.status(201).send({
-            message: "Food order created successfully",
-            orderId: savedOrder._id
+        console.log("Хүлээж авсан өгөгдөл:", req.body);
+        const { user, contactInfo, items } = req.body;
+
+        // 验证必填字段
+        if (!contactInfo?.email || !contactInfo?.phone || !contactInfo?.address) {
+            return res.status(400).send({
+                success: false,
+                message: "Имэйл, утасны дугаар, хаяг заавал шаардлагатай"
+            });
+        }
+
+        if (!items || items.length === 0) {
+            return res.status(400).send({
+                success: false,
+                message: "Захиалгын жагсаалт хоосон байна"
+            });
+        }
+
+        // Создать заказ
+        const newOrder = new FoodOrder({
+            user: user || null,
+            contactInfo,
+            items: items.map(item => ({
+                foodId: item.foodId,
+                foodName: item.foodName,
+                price: item.price,
+                quantity: item.quantity
+            })),
+            status: "PENDING",
+            totalAmount: items.reduce((sum, item) => sum + (item.price * item.quantity), 0),
         });
 
-    }
-    catch (error) {
-        console.error("createOrder error:", error);
-        res.status(500).send({ message: "Internal server error", error: error.message });
-    }
-}
+        const savedOrder = await newOrder.save();
 
+        res.status(201).send({
+            success: true,
+            order: savedOrder
+        });
+
+    } catch (error) {
+        console.error("Захиалгын үүсгэлтэд алдаа:", error);
+        res.status(500).send({
+            success: false,
+            message: "Захиалга үүсгэхэд алдаа гарлаа!",
+            error: error.message
+        });
+    }
+};
+
+
+
+
+
+
+
+
+
+// export const createOrder = async (req, res) => {
+//     try {
+//         const { user, foodOrderItem, totalPrice, status, image, category } = req.body;
+//         if (!user || !foodOrderItem || foodOrderItem.length === 0) {
+//             return res.status(400).send({ message: "User болон foodOrderItem шаардлагатай!" });
+//         }
+
+//         for (const item of foodOrderItem) {
+//             if (!item.food) {
+//                 return res.status(400).json({ message: "Food ID шаардлагатай!" });
+//             }
+//         }
+//         const newOrder = new foodOrder({
+//             user,
+//             foodOrderItem,
+//             totalPrice,
+//             status,
+//             image,
+//             category,
+//         });
+
+//         const savedOrder = await newOrder.save();
+
+//         const populatedOrder = await savedOrder.populate([
+//             { path: "user", select: "name email phone address" },
+//             {
+//                 path: "foodOrderItem.food",
+//                 model: "foods",
+//                 select: "name price category description image",
+//                 populate: { path: "category", model: "categories", select: "name" }
+//             }
+//         ]);
+
+//         res.status(201).send({
+//             message: "Food order created successfully",
+//             order: populatedOrder,
+//         });
+
+//     } catch (error) {
+//         console.error("createOrder error:", error);
+//         res.status(500).json({ message: "Internal server error", error: error.message });
+//     }
+// };
 
 
 

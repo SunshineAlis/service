@@ -11,4 +11,4 @@ foodCategorySchema.methods.getFoodCount = async function () {
   return foodCount;
 };
 
-export const Category = mongoose.model("categories", foodCategorySchema);
+export const Category = mongoose.model("Category", foodCategorySchema);

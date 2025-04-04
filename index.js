@@ -42,3 +42,6 @@ app.use((err, req, res, next) => {
 app.listen(3030, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+
+// taskkill / IM node.exe / F
