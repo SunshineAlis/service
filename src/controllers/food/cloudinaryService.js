@@ -1,5 +1,6 @@
 import cloudinary from "cloudinary";
 import { Readable } from "stream";
+import fs from "fs";
 
 cloudinary.v2.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -50,3 +51,6 @@ export const uploadImage = async (input, folder = "food_images") => {
         throw error;
     }
 };
+
+
+

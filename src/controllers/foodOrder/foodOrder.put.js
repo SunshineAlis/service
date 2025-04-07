@@ -1,25 +1,41 @@
 import { FoodOrder } from "../../model/foodOrder.model.js";
-export const updateOrder = async (req, res) => {
+
+export const updateOrderStatus = async (req, res) => {
     try {
-        const orderData = req.body;
-        const { orderId } = req.params;
+        const { id } = req.params;
+        const { orderStatus } = req.body;
 
-        const existingOrder = await FoodOrder.findByIdAndUpdate(
-            orderId,
-            orderData, {
-            new: true,
+        const validStatuses = ["pending", "processing", "completed", "cancelled"];
+        if (!validStatuses.includes(orderStatus)) {
+            return res.status(400).send({
+                success: false,
+                message: "Invalid status value"
+            });
         }
+
+        const updatedOrder = await FoodOrder.findByIdAndUpdate(
+            id,
+            { status: orderStatus },
+            { new: true }
         );
-        if (!existingOrder) {
-            res.status(404).send({ messaga: "Order not found." });
+
+        if (!updatedOrder) {
+            return res.status(404).send({
+                success: false,
+                message: "Order not found"
+            });
         }
-        await existingOrder.save();
-        res.status(200).send({ message: "Order updated successfully" })
 
+        res.status(200).send({
+            success: true,
+            message: "Order status updated successfully",
+            data: updatedOrder
+        });
     } catch (error) {
-
-        res.status(500).send({ message: "updataOrder:internal server error" })
-
+        res.status(500).send({
+            success: false,
+            message: "Error updating order status",
+            error: error.message
+        });
     }
-}
-
+};

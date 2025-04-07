@@ -1,58 +1,97 @@
 import { FoodOrder } from "../../model/foodOrder.model.js";
 
-export async function getFoodOrderWithFoodDetails() {
+export const getOrders = async (req, res) => {
     try {
-        const foodOrders = await FoodOrder.aggregate([
-            {
-                $unwind: "$items" // `items` массивийг нээх
-            },
+        const orders = await FoodOrder.aggregate([
+            { $unwind: "$items" },
             {
                 $lookup: {
-                    from: "foods", // "Food" коллекцтой холбогдож байна
-                    localField: "items.foodId", // `items.foodId` нь холбогдсон талбар
-                    foreignField: "_id", // `Food` коллекцийн `_id` нь холбогдсон талбар
-                    as: "foodDetails" // Холбогдсон өгөгдлийг `foodDetails` хэмээн нэрлэх
+                    from: "foods",
+                    localField: "items.foodId",
+                    foreignField: "_id",
+                    as: "foodDetails"
                 }
             },
             {
-                $unwind: "$foodDetails" // Холбогдсон хоолны мэдээллүүдийг нэгтгэх
+                $unwind: {
+                    path: "$foodDetails",
+                    preserveNullAndEmptyArrays: true
+                }
             },
             {
                 $project: {
-                    "contactInfo": 1,
-                    "totalAmount": 1,
-                    "status": 1,
-                    "foodDetails.foodName": 1,
-                    "foodDetails.price": 1,
-                    "items.quantity": 1,
+                    _id: 1,
+                    email: "$contactInfo.email",
+                    phone: "$contactInfo.phone",
+                    address: "$contactInfo.address",
+                    food: {
+                        foodName: "$items.foodName",
+                        categoryName: "$foodDetails.categoryName",
+                        image: "$foodDetails.image",
+                        quantity: "$items.quantity",
+                        unitPrice: "$items.price",
+                        total: { $multiply: ["$items.quantity", "$items.price"] }
+                    },
+                    orderTotal: { $multiply: ["$items.quantity", "$items.price"] },
+                    orderStatus: "$status",
+                    createdAt: 1
                 }
+            },
+            {
+                $group: {
+                    _id: "$_id",
+                    email: { $first: "$email" },
+                    phone: { $first: "$phone" },
+                    address: { $first: "$address" },
+                    foodList: { $push: "$food" },
+                    orderTotal: { $sum: "$orderTotal" },
+                    orderStatus: { $first: "$orderStatus" },
+                    createdAt: { $first: "$createdAt" }
+                }
+            },
+            {
+                $group: {
+                    _id: "$email",
+                    orders: {
+                        $push: {
+                            _id: "$_id",
+                            phone: "$phone",
+                            address: "$address",
+                            foodList: "$foodList",
+                            orderTotal: "$orderTotal",
+                            orderStatus: "$orderStatus",
+                            createdAt: "$createdAt"
+                        }
+                    },
+                    totalSpent: { $sum: "$orderTotal" }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    email: "$_id",
+                    orders: 1,
+                    totalSpent: 1
+                }
+            },
+            {
+                $sort: { "orders.createdAt": -1 }
             }
         ]);
 
-        console.log(foodOrders);
+        res.status(200).send({
+            success: true,
+            message: "Success",
+            data: orders
+        });
     } catch (error) {
-        console.error("Алдаа гарлаа:", error);
-    }
-}
-
-
-
-
-
-const getAllOrders = async (req, res) => {
-    try {
-        const orders = await FoodOrder
-            .find()
-            .populate("user", "email phone address") // 关联 User 数据
-            .sort({ createdAt: -1 }); // 按时间倒序
-
-        res.status(200).send(orders);
-    } catch (error) {
-        console.error("获取订单失败:", error);
-        res.status(500).send({ message: "获取订单失败！", error: error.message });
+        res.status(500).send({
+            success: false,
+            message: "error",
+            error: error.message
+        });
     }
 };
-export default getAllOrders;
 
 
 
@@ -62,31 +101,5 @@ export default getAllOrders;
 
 
 
-// const getAllOrders = async (req, res) => {
-//     try {
-//         const orders = await foodOrder.find()  // 必须先调用find()
-//             .populate({
-//                 path: "user",
-//                 select: "email phone address",
-//             })
-//             .populate({
-//                 path: "foodOrderItem.food",
-//                 model: "Food",  // 确保模型名称正确
-//                 select: "foodName price category image", // 使用实际字段名
-//                 populate: {
-//                     path: "category",
-//                     model: "Category",
-//                     select: "categoryName",
-//                 },
-//             });
 
-//         res.status(200).send({ message: "successful", orders });
-//     } catch (error) {
-//         console.error("Error fetching orders:", error);
-//         res.status(500).send({
-//             message: "Failed to fetch orders",
-//             error: error.message
-//         });
-//     }
-// };
-// export default getAllOrders;
+

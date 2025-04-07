@@ -4,8 +4,8 @@ import { connectDb } from "./src/connection/mongo.connection.js";
 import userRouter from "./src/routers/user.router.js";
 import foodRouter from "./src/routers/food.router.js";
 import categoryRouter from "./src/routers/category.router.js";
-
 import orderRouter from "./src/routers/order.router.js";
+import imageRouter from "./src/routers/image.router.js";
 
 const port = 3030;
 const app = express();
@@ -26,10 +26,11 @@ app.use("/user", userRouter);
 app.use("/foods", foodRouter);
 app.use("/category", categoryRouter);
 app.use("/order", orderRouter);
+app.use("/img", imageRouter);
 
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError) {
-    return res.status(400).json({ error: "Invalid JSON format" });
+    return res.status(400).send({ error: "Invalid JSON format" });
   }
   next();
 });
