@@ -30,7 +30,7 @@ imageRouter.post("/", upload.single("cover"), async (req, res) => {
         if (!req.file) return res.status(400).send({ error: "No file uploaded" });
 
         const ext = path.extname(req.file.originalname).toLowerCase();
-        const allowed = [".jpg", ".jpeg", ".png", ".gif"];
+        const allowed = [".jpg", ".jpeg", ".png", ".gif", ".webp"];
         if (!allowed.includes(ext)) {
             fs.unlinkSync(req.file.path);
             return res.status(400).send({ error: "Invalid file type" });
@@ -61,10 +61,10 @@ imageRouter.post("/", upload.single("cover"), async (req, res) => {
         res.status(500).send({ error: "Internal server error" });
     }
 });
-
-imageRouter.post("/:page", (req, res) => {
+imageRouter.get("/:page", (req, res) => {
     const { page } = req.params;
     const url = CoverImageStore[page];
+
     if (!url) {
         const fallback = cloudinary.url("default-cover.jpg", {
             secure: true,
@@ -75,4 +75,5 @@ imageRouter.post("/:page", (req, res) => {
 
     res.send({ url });
 });
+
 export default imageRouter;
