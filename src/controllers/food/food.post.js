@@ -8,7 +8,7 @@ export const createFood = async (req, res) => {
 
     if (req.file) {
       try {
-        imageUrl = await uploadImage(req.file.buffer); //
+        imageUrl = await uploadImage(req.file.buffer);
       } catch (uploadError) {
         console.error("Error uploading image:", uploadError);
         return res
