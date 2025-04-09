@@ -7,7 +7,7 @@ import categoryRouter from "./src/routers/category.router.js";
 import orderRouter from "./src/routers/order.router.js";
 import imageRouter from "./src/routers/image.router.js";
 
-const port = 3030;
+const port = process.env.PORT || 3030;
 const app = express();
 
 
