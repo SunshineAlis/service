@@ -1,4 +1,3 @@
-
 import express from "express";
 import multer from "multer";
 import path from "path";
@@ -8,22 +7,41 @@ import cloudinaryModule from "cloudinary";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
 
 const cloudinary = cloudinaryModule.v2;
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET,
-    secure: true
+    secure: true,
 });
+
 
 const upload = multer({ dest: path.join(__dirname, "../tmp") });
 
-const imageRouter = express.Router();
 
-const CoverImageStore = {};
+const storePath = path.join(__dirname, "../coverImageStore.json");
+
+
+function loadStore() {
+    if (fs.existsSync(storePath)) {
+        return JSON.parse(fs.readFileSync(storePath, "utf-8"));
+    }
+    return {};
+}
+
+function saveStore(store) {
+    fs.writeFileSync(storePath, JSON.stringify(store, null, 2));
+}
+
+
+let CoverImageStore = loadStore();
+
+const imageRouter = express.Router();
 
 imageRouter.post("/", upload.single("cover"), async (req, res) => {
     try {
@@ -39,19 +57,21 @@ imageRouter.post("/", upload.single("cover"), async (req, res) => {
         const result = await cloudinary.uploader.upload(req.file.path, {
             folder: "covers",
             public_id: uuidv4(),
-            overwrite: true
+            overwrite: true,
         });
 
         fs.unlinkSync(req.file.path);
 
         const pages = req.body.page?.split(",") || [];
-        pages.forEach(page => {
+        pages.forEach((page) => {
             CoverImageStore[page] = result.secure_url;
         });
 
+        saveStore(CoverImageStore);
+
         res.send({
             url: result.secure_url,
-            pages
+            pages,
         });
     } catch (error) {
         console.error("Upload error:", error);
@@ -61,6 +81,8 @@ imageRouter.post("/", upload.single("cover"), async (req, res) => {
         res.status(500).send({ error: "Internal server error" });
     }
 });
+
+
 imageRouter.get("/:page", (req, res) => {
     const { page } = req.params;
     const url = CoverImageStore[page];
@@ -68,7 +90,7 @@ imageRouter.get("/:page", (req, res) => {
     if (!url) {
         const fallback = cloudinary.url("default-cover.jpg", {
             secure: true,
-            transformation: [{ width: 1200, height: 630, crop: "fill" }]
+            transformation: [{ width: 1200, height: 630, crop: "fill" }],
         });
         return res.send({ url: fallback });
     }

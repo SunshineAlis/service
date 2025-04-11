@@ -12,7 +12,7 @@ userRouter.post("", checkEmail);
 userRouter.post("/signup", createUser);
 userRouter.post("/login", login);
 userRouter.put("/information", updateUser);
-userRouter.put("/forgotPassword", forgotPasswordUser)
+userRouter.put("/Pass", forgotPasswordUser)
 
 
 export default userRouter;
