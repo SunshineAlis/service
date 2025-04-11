@@ -6,12 +6,8 @@ import { v4 as uuidv4 } from "uuid";
 import cloudinaryModule from "cloudinary";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
-
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
-
 const cloudinary = cloudinaryModule.v2;
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -19,30 +15,19 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
     secure: true,
 });
-
-
 const upload = multer({ dest: path.join(__dirname, "../tmp") });
-
-
 const storePath = path.join(__dirname, "../coverImageStore.json");
-
-
-function loadStore() {
+const loadStore = () => {
     if (fs.existsSync(storePath)) {
         return JSON.parse(fs.readFileSync(storePath, "utf-8"));
     }
     return {};
 }
-
-function saveStore(store) {
+const saveStore = (store) => {
     fs.writeFileSync(storePath, JSON.stringify(store, null, 2));
 }
-
-
 let CoverImageStore = loadStore();
-
 const imageRouter = express.Router();
-
 imageRouter.post("/", upload.single("cover"), async (req, res) => {
     try {
         if (!req.file) return res.status(400).send({ error: "No file uploaded" });
@@ -81,8 +66,6 @@ imageRouter.post("/", upload.single("cover"), async (req, res) => {
         res.status(500).send({ error: "Internal server error" });
     }
 });
-
-
 imageRouter.get("/:page", (req, res) => {
     const { page } = req.params;
     const url = CoverImageStore[page];
