@@ -13,10 +13,10 @@ const app = express();
 
 const corsOptions = {
   origin: [
-    "http://localhost:3000",
-    "http://localhost:3001",
-    "http://localhost:3002",
     "https://sunshinealis-client.onrender.com",
+    "https://food-gxmwxt337-bumantuyas-projects.vercel.app",
+    "https://client-q6przmqz5-bumantuyas-projects.vercel.app"
+
   ],
   methods: ["GET", "POST", "DELETE", "PUT"],
   allowedHeaders: ["Content-Type", "Authorization"],
