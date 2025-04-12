@@ -14,11 +14,13 @@ const app = express();
 const corsOptions = {
   origin: [
     "http://localhost:3000", "http://localhost:3001", "http://localhost:3000",
+    "https://service-jus0.onrender.com",
     "https://sunshinealis-client.onrender.com",
     "https://client-zeta-mauve.vercel.app/",
     "https://food-gamma-blond.vercel.app/",
     "https://food-lhwhnxi46-bumantuyas-projects.vercel.app/",
-    "https://client-n3orihtsg-bumantuyas-projects.vercel.app/sign-up"
+    "https://client-n3orihtsg-bumantuyas-projects.vercel.app/sign-up",
+
   ],
   methods: ["GET", "POST", "DELETE", "PUT"],
   allowedHeaders: ["Content-Type", "Authorization"],
