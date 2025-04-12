@@ -15,7 +15,7 @@ const corsOptions = {
   origin: [
     "https://sunshinealis-client.onrender.com",
     "https://food-gxmwxt337-bumantuyas-projects.vercel.app",
-    "https://client-q6przmqz5-bumantuyas-projects.vercel.app"
+    "https://client-hmub4vtj2-bumantuyas-projects.vercel.app/"
 
   ],
   methods: ["GET", "POST", "DELETE", "PUT"],
