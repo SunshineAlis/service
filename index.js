@@ -17,7 +17,8 @@ const corsOptions = {
     "https://sunshinealis-client.onrender.com",
     "https://client-zeta-mauve.vercel.app/",
     "https://food-gamma-blond.vercel.app/",
-    "https://client-jgog4b3ww-bumantuyas-projects.vercel.app"
+    "https://food-lhwhnxi46-bumantuyas-projects.vercel.app/",
+    "https://client-n3orihtsg-bumantuyas-projects.vercel.app/sign-up"
   ],
   methods: ["GET", "POST", "DELETE", "PUT"],
   allowedHeaders: ["Content-Type", "Authorization"],
